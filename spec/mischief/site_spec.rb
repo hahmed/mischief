@@ -10,7 +10,7 @@ module Mischief
       end
 
       it "returns average response" do
-        expect(ping).to eq("https://github.com took 14ms 💪‍")
+        expect(ping).to eq("https://github.com took 60ms 👎")
       end
     end
 
@@ -26,7 +26,7 @@ module Mischief
       end
 
       it "returns emoji 💪 if response is amazing" do
-        expect(site.emoji(7)).to eq("💪‍")
+        expect(site.emoji(7)).to eq("💪")
       end
     end
   end
