@@ -12,8 +12,12 @@ module Mischief
     def calculate_requests
       end_time = Time.now + Mischief.configuration.number_of_requests
       total_request_time = 0
-      total_request_time += Benchmark.realtime do
-        request
+      count = 0
+      while count < Mischief.configuration.number_of_requests
+        total_request_time += Benchmark.realtime do
+          request
+        end
+        count++
       end
       total_request_time.round(4)
     end
