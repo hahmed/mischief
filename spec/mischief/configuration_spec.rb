@@ -14,6 +14,33 @@ module Mischief
         config.site_name = "https://i.amharoon.com"
         expect(config.site_name).to eq("https://i.amharoon.com")
       end
+
+      it "invalid url throws error for something" do
+        config = Configuration.new
+        expect { config.site_name = "something" }.to raise_error(StandardError, "Bad Url")
+      end
+
+      it "invalid url throws error for something." do
+        config = Configuration.new
+        expect { config.site_name = "something." }.to raise_error(StandardError, "Bad Url")
+      end
+
+      it "invalid url throws for github.com because host is not found" do
+        config = Configuration.new
+        expect { config.site_name = "github.com" }.to raise_error(StandardError, "Bad Url")
+      end
+
+      it "valid url http://github.com" do
+        config = Configuration.new
+        config.site_name = "http://github.com"
+        expect(config.site_name).to eq("http://github.com")
+      end
+
+      it "valid url http://google.co.uk" do
+        config = Configuration.new
+        config.site_name = "http://google.co.uk"
+        expect(config.site_name).to eq("http://google.co.uk")
+      end
     end
 
     describe "#duration" do
