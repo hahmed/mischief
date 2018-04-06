@@ -8,7 +8,8 @@ RSpec.describe Mischief do
   describe ".reset" do
     before :each do
       Mischief.configure do |config|
-       config.duration = 10
+       config.number_of_requests = 5
+       config.site_name = "https://google.com"
       end
     end
 
@@ -17,21 +18,27 @@ RSpec.describe Mischief do
 
       config = Mischief.configuration
 
-      expect(config.duration).to eq(60)
+      expect(config.site_name).to eq("https://github.com")
+      expect(config.number_of_requests).to eq(10)
     end
   end
 
   describe "#configure" do
     before :each do
       Mischief.configure do |config|
-       config.duration = 10
+       config.number_of_requests = 3
+       config.site_name = "https://google.com"
       end
     end
 
-    it "returns site taking 10ms" do
-      stub_request(:get, "https://github.com").
+    it "returns average response for site based on 3 requests" do
+      stub_request(:get, "https://google.com").
         to_return(status: 200)
       ping = Mischief::Site.new.ping
+      config = Mischief.configuration
+
+      expect(config.site_name).to eq("https://google.com")
+      expect(config.number_of_requests).to eq(3)
 
       expect(ping).to be_a(Float)
       expect(ping).to be < 1

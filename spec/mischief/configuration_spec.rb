@@ -43,17 +43,17 @@ module Mischief
       end
     end
 
-    describe "#duration" do
-      it "default duration is 60" do
-        Configuration.new.duration = 60
+    describe "#number_of_requests" do
+      it "default number_of_requests is 10" do
+        expect(Configuration.new.number_of_requests).to eq(10)
       end
     end
 
-    describe "#duration=" do
+    describe "#number_of_requests=" do
       it "can set value" do
         config = Configuration.new
-        config.duration = 7
-        expect(config.duration).to eq(7)
+        config.number_of_requests = 7
+        expect(config.number_of_requests).to eq(7)
       end
     end
   end

@@ -1,6 +1,6 @@
 module Mischief
   class Configuration
-    attr_accessor :duration
+    attr_accessor :number_of_requests
 
     def site_name=(site_name)
       @site_name = scrub_url(site_name)
@@ -12,7 +12,7 @@ module Mischief
 
     def initialize
       @site_name = "https://github.com"
-      @duration = 60
+      @number_of_requests = 10
     end
 
     private
