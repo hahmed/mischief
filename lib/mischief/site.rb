@@ -6,21 +6,13 @@ module Mischief
     def ping
       site = Mischief.configuration.site_name
       calculate_requests
-      # "#{site} took #{average_response}ms #{emoji(average_response)}"
     end
 
-    def calculate_requests
-      end_time = Time.now + Mischief.configuration.number_of_requests
-      total_request_time = 0
-      count = 0
-      while count < Mischief.configuration.number_of_requests
-        total_request_time += Benchmark.realtime do
-          request
-        end
-        count++
-      end
-      total_request_time.round(4)
-    end
+    # def status
+    #   config = Mischief.configuration
+    #   average_response = ping
+    #   "#{config.site_name} took #{average_response}ms from #{config.number_of_requests} requests #{emoji(average_response)}"
+    # end
 
     def emoji(average_response)
       case average_response
@@ -35,6 +27,16 @@ module Mischief
 
     private
 
+      def calculate_requests
+        total_request_time, count = 0, 0
+
+        while count < Mischief.configuration.number_of_requests do
+          count +=1
+          total_request_time += Benchmark.realtime { request }
+        end
+        total_request_time.round(4)
+      end
+
       def request
         response = Net::HTTP.get_response(URI.parse(Mischief.configuration.site_name))
         raise 'ResponseFailed' unless success_code?(response.code)
@@ -46,10 +48,8 @@ module Mischief
       def success_code?(code)
         case code.to_i
         when 400..599 # all 4xx and 5xx fails
-          # puts "Request ##{@number_of_requests} failed with status #{code}"
           return false
         else
-          # puts "Request ##{@number_of_requests} succeeded with status #{code}"
           return true
         end
       end
