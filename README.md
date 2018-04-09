@@ -1,6 +1,6 @@
 # Mischief
 
-CLI that checks the status of a site (default: https://github.com) and reports an average response time after checking the site every 10 seconds for 1 minute. Both duration and site should be configurable.
+CLI that checks the status of a site (default: https://github.com) and reports an average response time after checking the site by x (default: 10) times. Both number_of_requests and site should be configurable.
 
 ## Installation
 
@@ -21,7 +21,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-Mischief::Site.new.ping # => https://github.com 10 requests took 29ms 🤔
+Mischief::Site.new.ping # => https://github.com (10 requests) took 1ms 🤔
 ```
 
 ## Development

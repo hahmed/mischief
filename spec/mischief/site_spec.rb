@@ -3,37 +3,39 @@ require 'spec_helper'
 module Mischief
   RSpec.describe Site do
     describe "#ping" do
-      let (:ping) { Mischief::Site.new.ping }
-
-      it "result is a float" do
-        stub_request(:get, "https://github.com").
-          to_return(status: 200)
-
-        expect(ping).to be_a(Float)
-        expect(ping).to be < 1
-      end
-
-      it "returns average response" do
-        stub_request(:get, "https://github.com").
-          to_return(status: 200)
-
-        expect(ping).to be < 1
-      end
-    end
-
-    describe "#emoji" do
       let (:site) { Mischief::Site.new }
 
-      it "returns emoji 👎 if response too high" do
-        expect(site.emoji(5)).to eq("👎")
+      it "returns slow response with emoji 👎" do
+        stub_request(:get, "https://github.com").
+          to_return(status: 200)
+
+        allow(site).to receive(:calculate_requests).and_return(2)
+        expect(site.ping).to eq("https://github.com (10 requests) took 2ms 👎")
       end
 
-      it "returns emoji 🤔 if response is average" do
-        expect(site.emoji(1)).to eq("🤔")
+      it "returns average response with emoji 🤔" do
+        stub_request(:get, "https://github.com").
+          to_return(status: 200)
+
+        allow(site).to receive(:calculate_requests).and_return(0.5)
+        expect(site.ping).to eq("https://github.com (10 requests) took 0.5ms 🤔")
       end
 
-      it "returns emoji 💪 if response is amazing" do
-        expect(site.emoji(0.02)).to eq("💪")
+      it "returns fast response with emoji 💪" do
+        stub_request(:get, "https://github.com").
+          to_return(status: 200)
+
+        allow(site).to receive(:calculate_requests).and_return(0.04)
+        expect(site.ping).to eq("https://github.com (10 requests) took 0.04ms 💪")
+      end
+
+      it "returns response with request correctly un-pluralized" do
+        stub_request(:get, "https://github.com").
+          to_return(status: 200)
+
+        Mischief.configuration.number_of_requests = 1
+        allow(site).to receive(:calculate_requests).and_return(0.04)
+        expect(site.ping).to eq("https://github.com (1 request) took 0.04ms 💪")
       end
     end
   end

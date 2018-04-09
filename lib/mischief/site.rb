@@ -4,25 +4,10 @@ require 'benchmark'
 module Mischief
   class Site
     def ping
-      site = Mischief.configuration.site_name
-      calculate_requests
-    end
-
-    # def status
-    #   config = Mischief.configuration
-    #   average_response = ping
-    #   "#{config.site_name} took #{average_response}ms from #{config.number_of_requests} requests #{emoji(average_response)}"
-    # end
-
-    def emoji(average_response)
-      case average_response
-      when 0..0.2
-        "💪"
-      when 0.3..1
-        "🤔"
-      else
-        "👎"
-      end
+      config = Mischief.configuration
+      result = calculate_requests
+      request = config.number_of_requests > 1 ? "requests" : "request"
+      "#{config.site_name} (#{config.number_of_requests} #{request}) took #{result}ms #{emoji(result)}"
     end
 
     private
@@ -51,6 +36,17 @@ module Mischief
           return false
         else
           return true
+        end
+      end
+
+      def emoji(average_response)
+        case average_response
+        when 0..0.2
+          "💪"
+        when 0.3..1
+          "🤔"
+        else
+          "👎"
         end
       end
   end
