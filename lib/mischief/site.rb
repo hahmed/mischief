@@ -5,17 +5,17 @@ module Mischief
   class Site
     def ping
       config = Mischief.configuration
-      result = calculate_requests
+      result = calculate_requests(config.number_of_requests)
       request = config.number_of_requests > 1 ? "requests" : "request"
       "#{config.site_name} (#{config.number_of_requests} #{request}) took #{result}ms #{emoji(result)}"
     end
 
     private
 
-      def calculate_requests
+      def calculate_requests(number_of_requests)
         total_request_time, count = 0, 0
 
-        while count < Mischief.configuration.number_of_requests do
+        while count < number_of_requests do
           count +=1
           total_request_time += Benchmark.realtime { request }
         end
