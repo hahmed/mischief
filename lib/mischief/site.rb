@@ -7,7 +7,7 @@ module Mischief
       config = Mischief.configuration
       result = calculate_requests(config.number_of_requests)
       request = config.number_of_requests > 1 ? "requests" : "request"
-      "#{config.site_name} (#{config.number_of_requests} #{request}) took #{result}ms #{emoji(result)}"
+      "#{config.site_name} (#{config.number_of_requests} #{request}) took #{result} seconds #{emoji(result, config.number_of_requests)}"
     end
 
     private
@@ -39,11 +39,11 @@ module Mischief
         end
       end
 
-      def emoji(average_response)
-        case average_response
-        when 0..0.2
+      def emoji(average_response, number_of_requests)
+        case average_response / number_of_requests.to_f
+        when 0...0.7
           "💪"
-        when 0.3..1
+        when 0.7...1.3
           "🤔"
         else
           "👎"

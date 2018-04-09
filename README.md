@@ -21,7 +21,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-Mischief::Site.new.ping # => https://github.com (10 requests) took 1ms 🤔
+Mischief::Site.new.ping # => https://github.com (10 requests) took 7.3321 seconds 🤔
 ```
 
 ## Development
