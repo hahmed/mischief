@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
+require_relative "../lib/mischief"
 require_relative "../lib/mischief/site"
 
-site = Mischief::Site.new.ping
-puts site
+puts 'Attempting to ping site'
+status = Mischief::Site.new.ping
+puts status
